@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contatore e tabellina con HTML</title>
+</head>
+<body>
+
+  <h1>Contatore e Tabellina</h1>
+
+  <p id="counter"></p>
+
+  <script>
+    var counter = 1;
+    var interval = setInterval(function() {
+      document.getElementById("counter").innerHTML = counter;
+
+      if (counter == 5) {
+        clearInterval(interval);
+        printTabellina();
+      }
+
+      counter++;
+    }, 1000);
+
+    function printTabellina() {
+      var tabellina = "";
+      for (var i = 1; i <= 10; i++) {
+        tabellina += i + "<br>";
+      }
+
+      document.getElementById("counter").innerHTML = tabellina;
+    }
+  </script>
+
+</body>
+</html>
