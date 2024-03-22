@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link href="style.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div id="time">
+            <button onclick="avviotimer()">avvio timer</button>
+            <p id="timer"></p>
+            <p id="final"></p>
+        </div>
+        <div id="game">
+            <div id="p1">
+                <button onclick="moveImage()" id="player1">p1</button>
+                <br>
+                <img src="basket.jpg" id="basket">
+            </div>
+            <div id="circle"></div>
+            <div id="p2">
+                <img src="volley.jpg" id="volley">
+                <br>
+                <button onclick="moveImage2()" id="player2">p2</button>
+            </div>
+        </div>
+        <script type="text/javascript" src="script.js"></script>
+    </body>
+</html>
+
+
+let cont=0;
+function avviotimer(){
+  time=setInterval(timer, 1000);
+}
+function timer(){
+  cont++;
+  document.getElementById('timer').innerHTML=cont;
+  if(cont>60){
+    clearInterval(time);
+    document.getElementById('timer').innerHTML="STOP";
+    document.getElementById("final").innerHTML = "NESSUNO HA VINTO";
+  }
+}
+let p1 = 0;
+let p2 = 0;
+function moveImage(){
+  var img = document.getElementById("basket");
+  let currentLeft = parseInt(getComputedStyle(img).left) || 0;
+  img.style.left = ${currentLeft + 10}px;
+  p1++;
+  if(p1>=60){
+    document.getElementById("final").innerHTML = "IL GIOCATORE 1 HA VINTO!!!";
+  }
+}
+function moveImage2(){
+  var img = document.getElementById("volley");
+  let currentLeft = parseInt(getComputedStyle(img).left) || 0;
+  img.style.left = ${currentLeft - 10}px;
+  p2++;
+  if(p2>=60){
+    document.getElementById("final").innerHTML = "IL GIOCATORE 2 HA VINTO!!!";
+  }
+}
+#time{
+    text-align: center;
+}
+#basket{
+    position: relative;
+    height: 100px;
+    width: 100px;
+}
+#volley{
+    position: relative;
+    height: 100px;
+    width: 100px;
+}
+#game{
+    border: 5px solid black;
+    padding: 10px;
+    width: 700px;
+    height: 700px;
+    background-color: green;
+}
+#time{
+    border: 5px solid black;
+    padding: 10px;
+    width: 700px;
+}
+#p1{
+    text-align: left;
+}
+#p2{
+    text-align: right;
+}
+
