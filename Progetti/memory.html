@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gioco del Memory</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #e74c3c;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 {
+            color: #fff;
+        }
+
+        #memory-board {
+            display: grid;
+            grid-gap: 10px;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        .memory-card {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            transform: perspective(600px);
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            cursor: pointer;
+        }
+
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .front-face,
+        .back-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+        }
+
+        .front-face {
+            background-color: #2ecc71;
+        }
+
+        .back-face {
+            background-color: #2980b9;
+            transform: rotateY(180deg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            color: white;
+        }
+
+        #player-name {
+            font-size: 20px;
+            margin-top: 10px;
+            color: #fff;
+        }
+
+        #score {
+            font-size: 24px;
+            margin-top: 10px;
+            color: #fff;
+        }
+
+        #time {
+            font-size: 24px;
+            margin-top: 10px;
+            color: #fff;
+        }
+
+        #reset-button, #start-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #reset-button:hover, #start-button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gioco del Memory</h1>
+    <div id="player-name"></div>
+    <div id="score">Punti: 0</div>
+    <div id="time">Tempo: 0 secondi</div>
+    <button id="start-button">Inizia Gioco</button>
+    <button id="reset-button" style="display:none;">Reset</button>
+    <div id="memory-board"></div>
+
+    <script>
+        const level1Cards = [
+            { name: '🍎' },
+            { name: '🍌' },
+            { name: '🍒' },
+            { name: '🍉' },
+            { name: '🍓' },
+            { name: '🍇' },
+            { name: '🍍' },
+            { name: '🥝' }
+        ];
+
+        const level2Cards = [
+            { name: '🍎' },
+            { name: '🍌' },
+            { name: '🍒' },
+            { name: '🍉' },
+            { name: '🍓' },
+            { name: '🍇' },
+            { name: '🍍' },
+            { name: '🥝' },
+            { name: '🍋' },
+            { name: '🍊' }
+        ];
+
+        const level3Cards = [
+            { name: '🍎' },
+            { name: '🍌' },
+            { name: '🍒' },
+            { name: '🍉' },
+            { name: '🍓' },
+            { name: '🍇' },
+            { name: '🍍' },
+            { name: '🥝' },
+            { name: '🍋' },
+            { name: '🍊' },
+            { name: '🍐' },
+            { name: '🍏' },
+            { name: '🥥' },
+            { name: '🍑' },
+            { name: '🍈' }
+        ];
+
+        let level = 1;
+        let cardDeck = [];
+        const board = document.getElementById('memory-board');
+        const scoreDisplay = document.getElementById('score');
+        const playerNameDisplay = document.getElementById('player-name');
+        const timeDisplay = document.getElementById('time');
+        const startButton = document.getElementById('start-button');
+        const resetButton = document.getElementById('reset-button');
+
+        let firstCard = null;
+        let secondCard = null;
+        let lockBoard = false;
+        let matches = 0;
+        let score = 0;
+        let playerName = '';
+        let timerInterval;
+        let timeElapsed = 0;
+
+        function createBoard() {
+            board.innerHTML = ''; // Svuota la griglia
+
+            // Configura la dimensione della griglia in base al livello
+            board.style.gridTemplateColumns = level === 1 ? 'repeat(4, 100px)' 
+                                     : level === 2 ? 'repeat(5, 100px)' 
+                                     : 'repeat(6, 100px)';
+            const cardsArray = level === 1 ? level1Cards : level === 2 ? level2Cards : level3Cards;
+            cardDeck = [...cardsArray, ...cardsArray];
+            cardDeck.sort(() => 0.5 - Math.random()); // Mischia le carte
+
+            cardDeck.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('memory-card');
+                cardElement.dataset.name = card.name;
+
+                const frontFace = document.createElement('div');
+                frontFace.classList.add('front-face');
+
+                const backFace = document.createElement('div');
+                backFace.classList.add('back-face');
+                backFace.textContent = card.name; // Simbolo visibile solo sul retro
+
+                cardElement.appendChild(frontFace);
+                cardElement.appendChild(backFace);
+                cardElement.addEventListener('click', flipCard);
+                board.appendChild(cardElement);
+            });
+        }
+
+        function startTimer() {
+            timeDisplay.textContent = `Tempo: ${timeElapsed} secondi`;
+            timerInterval = setInterval(() => {
+                timeElapsed++;
+                timeDisplay.textContent = `Tempo: ${timeElapsed} secondi`;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function flipCard() {
+            if (lockBoard) return;
+            if (this === firstCard) return;
+
+            this.classList.add('flipped');
+
+            if (!firstCard) {
+                firstCard = this;
+                return;
+            }
+
+            secondCard = this;
+            checkForMatch();
+        }
+
+        function checkForMatch() {
+            let isMatch = firstCard.dataset.name === secondCard.dataset.name;
+
+            if (isMatch) {
+                disableCards();
+                matches++;
+                score++;
+                scoreDisplay.textContent = `Punti: ${score}`;
+
+                // Controlla se il livello è completato
+                const totalMatches = level === 1 ? level1Cards.length 
+                                  : level === 2 ? level2Cards.length 
+                                  : level3Cards.length;
+                if (matches === totalMatches) {
+                    stopTimer();
+                    if (level < 3) {
+                        setTimeout(() => {
+                            alert(`Livello ${level} completato! Preparati per il livello ${level + 1}.`);
+                            level++;
+                            matches = 0;
+                            createBoard();
+                            startTimer(); // Continua il timer
+                        }, 500);
+                    } else {
+                        setTimeout(() => {
+                            alert(`Complimenti, ${playerName}! Hai completato il gioco con ${score} punti in ${timeElapsed} secondi!`);
+                        }, 500);
+                    }
+                }
+            } else {
+                unflipCards();
+            }
+        }
+
+        function disableCards() {
+            firstCard.removeEventListener('click', flipCard);
+            secondCard.removeEventListener('click', flipCard);
+            resetBoard();
+        }
+
+        function unflipCards() {
+            lockBoard = true;
+            setTimeout(() => {
+                firstCard.classList.remove('flipped');
+                secondCard.classList.remove('flipped');
+                resetBoard();
+            }, 1000);
+        }
+
+        function resetBoard() {
+            [firstCard, secondCard] = [null, null];
+            lockBoard = false;
+        }
+
+        function resetGame() {
+            score = 0;
+            timeElapsed = 0;
+            matches = 0;
+            scoreDisplay.textContent = `Punti: ${score}`;
+            timeDisplay.textContent = `Tempo: ${timeElapsed} secondi`;
+            level = 1;
+            createBoard();
+            startButton.style.display = 'block';
+            resetButton.style.display = 'none';
+        }
+
+        function startGame() {
+            playerName = prompt('Inserisci il tuo nome:');
+            playerNameDisplay.textContent = `Giocatore: ${playerName}`;
+            startButton.style.display = 'none';
+            resetButton.style.display = 'block';
+            matches = 0;
+            score = 0;
+            timeElapsed = 0;
+            createBoard();
+            startTimer();
+        }
+
+        startButton.addEventListener('click', startGame);
+        resetButton.addEventListener('click', resetGame);
+
+    </script>
+</body>
+</html>
