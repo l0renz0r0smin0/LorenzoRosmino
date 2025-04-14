@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Relazione Progetto di Rete</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 20px 40px;
+      text-align: center;
+    }
+
+
+    main {
+      padding: 40px;
+      background-color: white;
+      max-width: 1000px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+
+    h1, h2, h3 {
+      color: #003366;
+    }
+
+
+    ul {
+      list-style-type: square;
+      padding-left: 20px;
+    }
+
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    }
+
+
+    footer {
+      background-color: #003366;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Relazione Progetto di Rete</h1>
+    <p>Documento tecnico-descrittivo</p>
+  </header>
+
+
+  <main>
+    <section id="descrizione">
+      <h2>Descrizione del Progetto</h2>
+      <p>
+       il pregetto prevede la realizazzione di una progettazzione fisica e logica di una rete azzinedale di un piano di un edificio
+    </section>
+
+
+    <section id="materiali">
+      <h2>Materiali Necessari</h2>
+      <ul>
+        <li>armadio rack</li>
+        <li>patch panel 24 porte</li>
+        <li>pannelo passa permute</li>
+        <li>pannello multiprese 8 prese</li>
+        <li>cassetto per ventilazione</li>
+        <li>swich 48 porte</li>
+        <li>router firewall </li>
+        <li>patch cord categoria 6</li>
+        <li>cavo UTP cat 6</li>
+        <li>presa RJ 45</li>
+        <li>acces point  POE da parete</li>
+        <li> telecamera IP POE 4 mp dotata di senzore di presenza</li>
+      </ul>
+    </section>
+
+
+    <section id="preventivo">
+      <h2>Preventivo di Spesa</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Materiale</th>
+            <th>Quantità</th>
+            <th>Prezzo unitario</th>
+            <th>Totale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>armadio rack 42</td>
+            <td>1</td>
+            <td>€620,00</td>
+            <td>€620,00</td>
+          </tr>
+          <tr>
+            <td>patch panel 24 porte </td>
+            <td>1</td>
+            <td>€69,00</td>
+            <td>€69,00</td>
+          </tr>
+          <tr>
+            <td>pannello passa permute </td>
+            <td>4</td>
+            <td>€7,00</td>
+            <td>€28,00</td>
+          </tr>
+          <tr>
+            <td>pannello multiprese 8 prese </td>
+            <td>2</td>
+            <td>€35,00</td>
+            <td>€70,00</td>
+          </tr>
+          <tr>
+            <td>cassetto per vemtilazione</td>
+            <td>1</td>
+            <td>€125,00</td>
+            <td>€125,00</td>
+          </tr>
+          <tr>
+            <td>swich 48 porte </td>
+            <td>1</td>
+            <td>€345,00</td>
+            <td>€345,00</td>
+          </tr>
+          <tr>
+            <td>nvr poe (registratore)</td>
+            <td>1</td>
+            <td>€350,00</td>
+            <td>€350,00</td>
+          </tr>
+          <tr>
+            <td>patch cord o,5 metri </td>
+            <td>30</td>
+            <td>€1,20</td>
+            <td>€36,00</td>
+          </tr>
+          <td>cavo utp cat 6 </td>
+          <td>3</td>
+          <td>€169,00</td>
+          <td>€507,00</td>
+        </tr>
+        <td>presa rj 45</td>
+        <td>16</td>
+        <td>€65,00</td>
+        <td>€1.170,00</td>
+      </tr>
+      <td>access point poe da parete </td>
+      <td>2</td>
+      <td>€89,00</td>
+      <td>€178,00</td>
+    </tr>
+    <td>telecamere ip poe </td>
+    <td>4</td>
+    <td>€49,00</td>
+    <td>€196,00</td>
+  </tr>
+        </tbody>
+      </table>
+    </section>
+
+
+    <section id="schemi">
+      <h2>Schema della Rete</h2>
+      <h3>Schema Fisico</h3>
+      <img src="schema-fisico.png" alt="Schema fisico della rete" />
+    </section>
+
+
+    <section id="ip">
+      <h2>Piano di Indirizzamento IP</h2>
+      <p>La rete utilizza la classe C privata 192.168.1.0/24, suddivisa in sottoreti con il metodo VLSM per ottimizzare l’uso degli indirizzi IP:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Dipartimento</th>
+            <th>Subnet</th>
+            <th>Range IP</th>
+            <th>Gateway</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Amministrazione</td>
+            <td>/27</td>
+            <td>192.168.1.1 – 192.168.1.30</td>
+            <td>192.168.1.1</td>
+          </tr>
+          <tr>
+            <td>Commerciale</td>
+            <td>/27</td>
+            <td>192.168.1.33 – 192.168.1.62</td>
+            <td>192.168.1.33</td>
+          </tr>
+          <tr>
+            <td>IT</td>
+            <td>/26</td>
+            <td>192.168.1.65 – 192.168.1.126</td>
+            <td>192.168.1.65</td>
+          </tr>
+          <tr>
+            <td>Server</td>
+            <td>/28</td>
+            <td>192.168.1.129 – 192.168.1.142</td>
+            <td>192.168.1.129</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+
+  <footer>
+    <p>Relazione di progetto - © 2025</p>
+  </footer>
+</body>
+</html>
+
+
+
